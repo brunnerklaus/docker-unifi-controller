@@ -1,0 +1,20 @@
+image: unifi-controller:5.12
+tags:
+manifests:
+  -
+    image: unifi-controller:5.12-amd64
+    platform:
+      architecture: amd64
+      os: linux
+  -
+    image: unifi-controller:5.12-arm32v7
+    platform:
+      architecture: arm
+      os: linux
+      variant: v7
+  -
+    image: unifi-controller:5.12-arm64v8
+    platform:
+      architecture: arm64
+      os: linux
+      variant: v8

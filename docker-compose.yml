@@ -1,0 +1,39 @@
+version: '2'
+services:
+  unifi-controller:
+    build:
+      context: ./
+      dockerfile: Dockerfile.armhf
+    container_name: unifi-controller
+    restart: always
+    network_mode: host
+    # Uncomment the following to set java options
+    # environment:
+    #   JAVA_OPTS: -Xmx512M
+    volumes:
+      # Unifi v5.0.7 creates all of these directories (some remain empty)
+      - config:/var/lib/unifi
+      - log:/usr/lib/unifi/logs
+      - log2:/var/log/unifi
+      - run:/usr/lib/unifi/run
+      - run2:/run/unifi
+      - work:/usr/lib/unifi/work
+    ports:
+      - 8080:8080/tcp
+      - 8443:8443/tcp
+      - 8843:8843/tcp
+      - 8880:8880/tcp
+      - 3478:3478/udp
+volumes:
+  config:
+    driver: local
+  log:
+    driver: local
+  log2:
+    driver: local
+  run:
+    driver: local
+  run2:
+    driver: local
+  work:
+    driver: local
