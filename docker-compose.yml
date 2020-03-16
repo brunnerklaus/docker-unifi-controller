@@ -4,6 +4,8 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile.armhf
+    image: unifi-controller:latest
+    hostname: unifi-controller
     container_name: unifi-controller
     restart: always
     network_mode: host
