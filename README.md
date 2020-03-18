@@ -13,8 +13,8 @@ A Raspberry Pi running with [Docker and Docker Compose installed](https://docs.d
 
 ## On RaspberryPI:
 
-1. `git clone https://github.com/brunnerklaus/docker-unifi-controller.git ~/docker-unifi-controller.git`
-2. `cd ~/docker-unifi-controller.git`
+1. `git clone https://github.com/brunnerklaus/docker-unifi-controller ~/docker-unifi-controller.git`
+2. `cd ~/docker-unifi-controller`
 3. Edit `docker-compose.yml` if you need a the correct Dockerfile for your architecture platform.
 4. `docker-compose up -d`
 
