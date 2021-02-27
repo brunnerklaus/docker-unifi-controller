@@ -44,8 +44,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Use apt-get install -f to complete the installation with dependencies
 ENV UNIFI_BRANCH stable
 #Get last release version https://community.ui.com/releases?q=UniFi+Network+Controller
-ENV UNIFI_VERSION 6.0.43
-ENV UNIFI_DOCKER_VERSION 6.0.43
+ENV UNIFI_VERSION 6.0.45
+ENV UNIFI_DOCKER_VERSION 6.0.45
 RUN mkdir -p /usr/share/man/man1 && \
       mkdir -p /tmp/build && \
       cd /tmp/build && \
