@@ -43,8 +43,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Use dpkg to mark the package for install (expect it to fail to complete the installation)
 # Use apt-get install -f to complete the installation with dependencies
 ENV UNIFI_BRANCH stable
-# Get last release version https://community.ui.com/releases?q=UniFi+Network+Controller or ccheck with command 
-# curl -sX GET http://dl-origin.ubnt.com/unifi/debian/dists/stable/ubiquiti/binary-amd64/Packages  grep -A 7 -m 1 'Package: unifi' | awk -F ': ' '/Version/{print $2;exit}' | awk -F '-' '{print $1}'
+# Get last release version https://community.ui.com/releases?q=UniFi+Network+Controller or ccheck with command
+# curl -sX GET http://dl-origin.ubnt.com/unifi/debian/dists/stable/ubiquiti/binary-amd64/Packages grep -A 7 -m 1 'Package: unifi' | awk -F ': ' '/Version/{print $2;exit}' | awk -F '-' '{print $1}'
 ENV UNIFI_VERSION 6.2.26
 RUN mkdir -p /usr/share/man/man1 && \
       mkdir -p /tmp/build && \
@@ -73,7 +73,3 @@ ENV JAVA_OPTS -Xmx512M
 COPY entrypoint.sh /docker-entrypoint.sh
 ENTRYPOINT ["/sbin/tini", "-g", "--", "/docker-entrypoint.sh"]
 CMD ["start"]
-
-
-
-curl -sX GET http://dl-origin.ubnt.com/unifi/debian/dists/stable/ubiquiti/binary-amd64/Packages  grep -A 7 -m 1 'Package: unifi' | awk -F ': ' '/Version/{print $2;exit}' | awk -F '-' '{print $1}'
