@@ -1,21 +1,21 @@
 FROM debian:stretch-slim as tini
-ENV TINI_VERSION v0.18.0
+ENV TINI_VERSION v0.19.0
 ENV TINI_ARCH -armhf
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-      wget \
-      ca-certificates \
-      gnupg \
-      dirmngr \
-      apt-transport-https \
-      apt-utils \
-    && rm -rf /var/lib/apt/lists/*
+  wget \
+  ca-certificates \
+  gnupg \
+  dirmngr \
+  apt-transport-https \
+  apt-utils \
+  && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /tmp/build && \
 	cd /tmp/build && \
 	wget -O tini https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-static${TINI_ARCH} && \
 	wget -O tini.asc https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-static${TINI_ARCH}.asc && \
-  gpg --batch --keyserver hkp://eu.pool.sks-keyservers.net:80 --recv-keys 595E85A6B1B4779EA4DAAEC70B588DFF0527A9B7 && \
+  gpg --batch --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 595E85A6B1B4779EA4DAAEC70B588DFF0527A9B7 && \
   gpg --batch --verify tini.asc tini && \
 	cp tini /sbin/ && \
 	chmod +x /sbin/tini && \
@@ -31,14 +31,14 @@ COPY --from=qemu /usr/bin/qemu-arm-static /usr/bin/qemu-arm-static
 COPY --from=tini /sbin/tini /sbin/tini
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-      wget \
-      ca-certificates \
-      gnupg \
-      dirmngr \
-      curl \
-    && rm -rf /var/lib/apt/lists/* && \
-    wget https://archive.raspbian.org/raspbian.public.key -O - | apt-key add - && \
-    echo 'deb http://archive.raspbian.org/raspbian stretch main contrib non-free' >> /etc/apt/sources.list
+  wget \
+  ca-certificates \
+  gnupg \
+  dirmngr \
+  curl \
+  && rm -rf /var/lib/apt/lists/* && \
+  wget https://archive.raspberrypi.org/debian/raspberrypi.gpg.key -O - | apt-key add - && \
+  echo 'deb http://raspbian.raspberrypi.org/raspbian/ stretch main contrib non-free rpi' >> /etc/apt/sources.list
 
 # Install any version from deb download
 # Use dpkg to mark the package for install (expect it to fail to complete the installation)
@@ -48,22 +48,22 @@ ENV UNIFI_BRANCH stable
 # curl -sX GET http://dl-origin.ubnt.com/unifi/debian/dists/stable/ubiquiti/binary-amd64/Packages | grep -A 7 -m 1 'Package: unifi' | awk -F ': ' '/Version/{print $2;exit}' | awk -F '-' '{print $1}'
 ENV UNIFI_VERSION 7.0.25
 RUN mkdir -p /usr/share/man/man1 && \
-      mkdir -p /tmp/build && \
-      cd /tmp/build && \
-      # if no version is defined fallback to current stable version
-      if [ -z ${UNIFI_VERSION+x} ]; then \
-        UNIFI_VERSION=$(curl -sX GET http://dl-origin.ubnt.com/unifi/debian/dists/${UNIFI_BRANCH}/ubiquiti/binary-amd64/Packages \
-        |grep -A 7 -m 1 'Package: unifi' \
-        | awk -F ': ' '/Version/{print $2;exit}' \
-        | awk -F '-' '{print $1}'); \
-      fi && \
-      wget -q -O /etc/apt/trusted.gpg.d/unifi-repo.gpg https://dl.ui.com/unifi/unifi-repo.gpg && \
-      wget -q https://www.ubnt.com/downloads/unifi/${UNIFI_VERSION}/unifi_sysvinit_all.deb && \
-      apt-get update && apt-get install -y --no-install-recommends \
-        ./unifi_sysvinit_all.deb \
-        procps && \
-      rm -rf /var/lib/apt/lists/* && \
-      rm -rf /tmp/build
+  mkdir -p /tmp/build && \
+  cd /tmp/build && \
+  # if no version is defined fallback to current stable version
+  if [ -z ${UNIFI_VERSION+x} ]; then \
+    UNIFI_VERSION=$(curl -sX GET http://dl-origin.ubnt.com/unifi/debian/dists/${UNIFI_BRANCH}/ubiquiti/binary-amd64/Packages \
+    |grep -A 7 -m 1 'Package: unifi' \
+    | awk -F ': ' '/Version/{print $2;exit}' \
+    | awk -F '-' '{print $1}'); \
+  fi && \
+    wget -q -O /etc/apt/trusted.gpg.d/unifi-repo.gpg https://dl.ui.com/unifi/unifi-repo.gpg && \
+    wget -q https://www.ubnt.com/downloads/unifi/${UNIFI_VERSION}/unifi_sysvinit_all.deb && \
+    apt-get update && apt-get install -y --no-install-recommends \
+    ./unifi_sysvinit_all.deb \
+    procps && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm -rf /tmp/build
 
 RUN ln -s /var/lib/unifi /usr/lib/unifi/data
 EXPOSE 8080/tcp 8443/tcp 8843/tcp 8880/tcp 3478/udp
