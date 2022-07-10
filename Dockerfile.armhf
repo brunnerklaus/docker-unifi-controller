@@ -46,7 +46,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 ENV UNIFI_BRANCH stable
 # Get last release version https://community.ui.com/releases?q=UniFi+Network+Controller or ccheck with command
 # curl -sX GET http://dl-origin.ubnt.com/unifi/debian/dists/stable/ubiquiti/binary-amd64/Packages | grep -A 7 -m 1 'Package: unifi' | awk -F ': ' '/Version/{print $2;exit}' | awk -F '-' '{print $1}'
-ENV UNIFI_VERSION 7.0.25
+ENV UNIFI_VERSION 7.1.66
 RUN mkdir -p /usr/share/man/man1 && \
   mkdir -p /tmp/build && \
   cd /tmp/build && \
@@ -59,7 +59,7 @@ RUN mkdir -p /usr/share/man/man1 && \
   fi && \
     wget -q -O /etc/apt/trusted.gpg.d/unifi-repo.gpg https://dl.ui.com/unifi/unifi-repo.gpg && \
     wget -q https://www.ubnt.com/downloads/unifi/${UNIFI_VERSION}/unifi_sysvinit_all.deb && \
-    apt-get update && apt-get install -y --no-install-recommends \
+    apt-get update && apt-get install -y --no-install-recommends --allow-unauthenticated \
     ./unifi_sysvinit_all.deb \
     procps && \
     rm -rf /var/lib/apt/lists/* && \
