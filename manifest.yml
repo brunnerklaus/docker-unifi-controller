@@ -1,19 +1,19 @@
-image: unifi-controller:7.1.66
+image: unifi-controller:7.2.94
 tags:
 manifests:
   -
-    image: unifi-controller:7.1.66-amd64
+    image: unifi-controller:7.2.94-amd64
     platform:
       architecture: amd64
       os: linux
   -
-    image: unifi-controller:7.1.66-arm32v7
+    image: unifi-controller:7.2.94-arm32v7
     platform:
       architecture: arm
       os: linux
       variant: v7
   -
-    image: unifi-controller:7.1.66-arm64v8
+    image: unifi-controller:7.2.94-arm64v8
     platform:
       architecture: arm64
       os: linux
